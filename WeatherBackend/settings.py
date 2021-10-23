@@ -30,7 +30,7 @@ ALLOWED_HOSTS = ['127.0.0.1','weather--backend.herokuapp.com']
 
 PROJECT_DIR = os.path.dirname(os.path.abspath(__file__))
 STATIC_ROOT = os.path.join(PROJECT_DIR, 'static')
-
+STATICFILES_STORAGE =  'django.contrib.staticfiles.storage.StaticFilesStorage' 
 # Application definition
 
 INSTALLED_APPS = [
