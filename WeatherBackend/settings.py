@@ -147,4 +147,8 @@ EMAIL_HOST_PASSWORD = "weatherteam@"
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+# ie if Heroku server
+if 'DATABASE_URL' in os.environ:
+    import dj_database_url
+    DATABASES = {'default': dj_database_url.config()}
 django_heroku.settings(locals())
