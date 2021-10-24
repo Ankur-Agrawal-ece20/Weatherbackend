@@ -116,18 +116,20 @@ class AlertView(generics.GenericAPIView):
         return Response(content, status=status.HTTP_200_OK)
 
     def post(self,request):
-        data=Location.objects.get(user=request.user)
-        if(data is not None):
+        try:
+            data=Location.objects.get(user=request.user)
             if(data.rainfallalert==False): create_email(data)
             return Response({'success': 'Subscribed to email alerts!'}, status=status.HTTP_200_OK)
-        serializer=LocationSerializer(data=request.data)
-        if serializer.is_valid():
-            data=serializer.save()
-            data.user=request.user
-            data.save()
-            return Response({'success': 'Subscribed to email alerts!'}, status=status.HTTP_200_OK)
-        else:  
-            return Response({'error': serializer.errors},status=status.HTTP_409_CONFLICT)
+        except:
+            serializer=LocationSerializer(data=request.data)
+            if serializer.is_valid():
+                data=serializer.save()
+                data.user=request.user
+                data.save()
+                create_email(data)
+                return Response({'success': 'Subscribed to email alerts!'}, status=status.HTTP_200_OK)
+            else:  
+                return Response({'error': serializer.errors},status=status.HTTP_409_CONFLICT)
 
     def delete(self,request):
         data=Location.objects.get(user=request.user)
